@@ -1,25 +1,24 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { Redirect } from "next";
 import { createClient } from "../../utils/supabase/server";
-import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function signUp(formData: FormData) {
   const supabase = await createClient();
 
-  const credentianls = {
+  const credentials = {
     username: formData.get("username") as string,
     email: formData.get("email") as string,
     password: formData.get("password") as string,
   };
 
   const { error, data } = await supabase.auth.signUp({
-    email: credentianls.email,
-    password: credentianls.password,
+    email: credentials.email,
+    password: credentials.password,
     options: {
       data: {
-        username: credentianls.username,
+        username: credentials.username,
       },
     },
   });
@@ -38,4 +37,60 @@ export async function signUp(formData: FormData) {
 
   revalidatePath("/", "layout");
   return { status: "success", user: data.user };
+}
+
+export async function signIn(formData: FormData) {
+  const supabase = await createClient();
+
+  const credentials = {
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+  };
+
+  const { error, data } = await supabase.auth.signInWithPassword(credentials);
+
+  if (error) {
+    return {
+      status: error?.message,
+      user: null,
+    };
+  }
+
+  // Check if user already exists in the user_profiles table
+  const { data: existingUser, error: fetchError } = await supabase
+    .from("user_profiles")
+    .select("*")
+    .eq("email", credentials?.email)
+    .single();
+
+  // Only insert if user does not exist and there was no fetch error
+  if (!existingUser && !fetchError) {
+    const { error: insertError } = await supabase.from("user_profiles").insert({
+      email: data?.user.email,
+      username: data?.user?.user_metadata?.username,
+    });
+
+    if (insertError) {
+      return {
+        status: insertError?.message,
+        user: null,
+      };
+    }
+  }
+
+  revalidatePath("/", "layout");
+  return { status: "success", user: data.user };
+}
+
+export async function signOut() {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    redirect("/error");
+  }
+
+  revalidatePath("/", "layout");
+  redirect("/login");
 }
