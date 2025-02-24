@@ -1,21 +1,35 @@
 import SignUpForm from "@/components/SignUpForm";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import signupImage from "@/assets/signup-image.jpg";
 
 const SignUp = async () => {
   return (
-    <div className="w-full flex mt-20 justify-center">
-      <section className="flex flex-col w-[400px]">
-        <h1 className="text-3xl w-full text-center font-bold mb-6">Sign Up</h1>
-        <SignUpForm />
-        <div className="mt-2 flex items-center">
-          <h1>Already have an account?</h1>
-          <Link className="font-bold ml-2" href="/login">
-            Sign In
-          </Link>
+    <main className="flex h-screen items-center justify-center p-5">
+      <div className="flex h-full max-h-[40rem] w-full max-w-[64rem] overflow-hidden rounded-2xl shadow-2xl">
+        {/* Left Side: Form */}
+        <div className="w-full space-y-10 overflow-y-auto p-10 md:w-1/2">
+          <h1 className="text-center text-3xl font-bold">Register Here</h1>
+
+          <div className="space-y-5">
+            <SignUpForm />
+
+            {/* Links */}
+            <Link href="/login" className="block text-center hover:underline">
+              Already have an account? Log In
+            </Link>
+          </div>
         </div>
-      </section>
-    </div>
+
+        {/* Right Side: Image */}
+        <Image
+          src={signupImage}
+          alt="Login Illustration"
+          className="hidden w-1/2 object-cover md:block"
+        />
+      </div>
+    </main>
   );
 };
 

@@ -1,31 +1,48 @@
 import LoginForm from "@/components/LoginForm";
 import LoginGithub from "@/components/LoginGithub";
 import Link from "next/link";
+import loginImage from "@/assets/login-image.jpg";
+import Image from "next/image";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Login",
+};
 
 export default function LoginPage() {
   return (
-    <>
-      <div className="w-full flex mt-20 justify-center">
-        <section className="flex flex-col w-[400px]">
-          <h1 className="text-3xl w-full text-center font-bold mb-6">
-            Sign in
-          </h1>
-          <LoginForm />
-          <LoginGithub />
-          <div className="mt-2 flex items-center">
-            <h1>{`Don't have an account?`}</h1>
-            <Link className="font-bold ml-2" href="/register">
-              Sign Up
+    <main className="flex h-screen items-center justify-center p-5">
+      <div className="flex h-full max-h-[40rem] w-full max-w-[64rem] overflow-hidden rounded-2xl shadow-2xl">
+        {/* Left Side: Form */}
+        <div className="w-full space-y-10 overflow-y-auto p-10 md:w-1/2">
+          <h1 className="text-center text-3xl font-bold">Login Here</h1>
+
+          <div className="space-y-5">
+
+            {/* Login Form & GitHub Login */}
+            <LoginForm />
+            <LoginGithub />
+
+            {/* Links */}
+            <Link href="/register" className="block text-center hover:underline">
+              Don&apos;t have an account? Sign up
+            </Link>
+            <Link
+              href="/forgot-password"
+              className="block text-center hover:underline"
+            >
+              Forgot your password?
             </Link>
           </div>
-          <div className="mt-2 flex items-center">
-            <h1>{`Forgot your password?`}</h1>
-            <Link className="font-bold ml-2" href="/forgot-password">
-              Reset Password
-            </Link>
-          </div>
-        </section>
+        </div>
+
+        {/* Right Side: Image */}
+        <Image
+          src={loginImage}
+          alt="Login Illustration"
+          className="hidden w-1/2 object-cover md:block"
+        />
       </div>
-    </>
+    </main>
   );
 }

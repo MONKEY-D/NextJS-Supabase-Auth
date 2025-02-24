@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 
 export default function ClientComponent() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {

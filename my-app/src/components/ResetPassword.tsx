@@ -19,7 +19,7 @@ const ResetPassword = () => {
     <div>
       <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-200">
+          <label className="block text-sm font-medium text-foreground">
             New Password
           </label>
           <input
