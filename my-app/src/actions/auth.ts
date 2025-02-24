@@ -3,6 +3,17 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "../../utils/supabase/server";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+
+export async function getUserSession() {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error) {
+    return null;
+  }
+  return { status: "success", user: data?.user };
+}
 
 export async function signUp(formData: FormData) {
   const supabase = await createClient();
@@ -93,4 +104,21 @@ export async function signOut() {
 
   revalidatePath("/", "layout");
   redirect("/login");
+}
+
+export async function signInWithGithub() {
+  const origin = (await headers()).get("origin");
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "github",
+    options: {
+      redirectTo: `${origin}/auth/callback`,
+    },
+  });
+
+  if (error) {
+    redirect("/error");
+  } else if (data.url) {
+    return redirect(data.url);
+  }
 }
