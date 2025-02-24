@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server";
-// The client you created from the Server-Side Auth instructions
 import { createClient } from "../../../../utils/supabase/server";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  // if "next" is in param, use it as the redirect URL
   const next = searchParams.get("next") ?? "/";
 
   if (code) {
@@ -18,30 +16,60 @@ export async function GET(request: Request) {
         return NextResponse.redirect(`${origin}/error`);
       }
 
-      //check if user exists in user_profiles table
+
       const { data: existingUser } = await supabase
-        .from("user_profile")
+        .from("user_profiles")
         .select("*")
         .eq("email", data?.user?.email)
         .limit(1)
         .single();
 
-      if (!existingUser) {
-        const { error: dbError } = await supabase.from("user_profiles").insert({
-          email: data?.user?.email,
-          username: data?.user?.user_metadata?.user_name,
-        });
+    //   if (!existingUser) {
+    //     const { error: dbError } = await supabase.from("user_profiles").insert({
+    //       email: data?.user?.email,
+    //       username: data?.user?.user_metadata?.username,
+    //     });
 
+    //     if (dbError) {
+    //       console.error("Error inserting user data:", dbError.message);
+    //       return NextResponse.redirect(`${origin}/error`);
+    //     }
+    //   }
+
+    if (!existingUser) {
+        const email = data?.user?.email;
+        if (!email) {
+          console.error("Error: Email is undefined");
+          return NextResponse.redirect(`${origin}/error`);
+        }
+      
+        // Ensure username is never null
+        const username =
+          data?.user?.user_metadata?.username ||  // Use username if available
+          data?.user?.user_metadata?.full_name || // Fallback to full name
+          email.split("@")[0]; // Use email prefix as last resort
+      
+        console.log("Generated username:", username); // Debugging log
+      
+        const { error: dbError } = await supabase.from("user_profiles").insert([
+          {
+            email: email, // Now guaranteed to be defined
+            username: username,
+          },
+        ]);
+      
         if (dbError) {
-          console.error("Error inserting user data:", dbError.message);
+          console.error("Error inserting user data:", dbError);
           return NextResponse.redirect(`${origin}/error`);
         }
       }
+      
 
-      const forwardedHost = request.headers.get("x-forwarded-host"); // original origin before load balancer
+
+      const forwardedHost = request.headers.get("x-forwarded-host");
       const isLocalEnv = process.env.NODE_ENV === "development";
+
       if (isLocalEnv) {
-        // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
         return NextResponse.redirect(`${origin}${next}`);
       } else if (forwardedHost) {
         return NextResponse.redirect(`https://${forwardedHost}${next}`);

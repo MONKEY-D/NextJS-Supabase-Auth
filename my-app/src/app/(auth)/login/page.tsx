@@ -4,6 +4,7 @@ import Link from "next/link";
 import loginImage from "@/assets/login-image.jpg";
 import Image from "next/image";
 import { Metadata } from "next";
+import LoginGoogle from "@/components/LoginGoogle";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -18,13 +19,16 @@ export default function LoginPage() {
           <h1 className="text-center text-3xl font-bold">Login Here</h1>
 
           <div className="space-y-5">
-
             {/* Login Form & GitHub Login */}
             <LoginForm />
             <LoginGithub />
+            <LoginGoogle />
 
             {/* Links */}
-            <Link href="/register" className="block text-center hover:underline">
+            <Link
+              href="/register"
+              className="block text-center hover:underline"
+            >
               Don&apos;t have an account? Sign up
             </Link>
             <Link

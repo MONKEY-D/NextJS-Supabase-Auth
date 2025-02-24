@@ -122,3 +122,23 @@ export async function signInWithGithub() {
     return redirect(data.url);
   }
 }
+
+export async function signInWithGoogle() {
+  const origin = (await headers()).get("origin");
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${origin}/auth/callback`,
+      queryParams: {
+        prompt: "select_account",
+      },
+    },
+  });
+
+  if (error) {
+    redirect("/error");
+  } else if (data.url) {
+    return redirect(data.url);
+  }
+}
