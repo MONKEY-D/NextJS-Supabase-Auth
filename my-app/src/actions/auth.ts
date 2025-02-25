@@ -72,7 +72,7 @@ export async function signIn(formData: FormData) {
     .from("user_profiles")
     .select("*")
     .eq("email", credentials?.email)
-    .single();
+    .maybeSingle();
 
   // Only insert if user does not exist and there was no fetch error
   if (!existingUser && !fetchError) {
@@ -141,4 +141,41 @@ export async function signInWithGoogle() {
   } else if (data.url) {
     return redirect(data.url);
   }
+}
+
+export async function forgotPassword(formData: FormData) {
+  const supabase = await createClient();
+  const origin = (await headers()).get("origin");
+
+  const { error } = await supabase.auth.resetPasswordForEmail(
+    formData.get("email") as string,
+    {
+      redirectTo: `${origin}/reset-password`,
+    }
+  );
+
+  if (error) {
+    return {
+      status: error?.message,
+    };
+  }
+  return { status: "success" };
+}
+
+export async function resetPassword(formData: FormData, code: string) {
+  const supabase = await createClient();
+  const { error: CodeError } = await supabase.auth.exchangeCodeForSession(code);
+
+  if (CodeError) {
+    return { status: CodeError?.message };
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: formData.get("password") as string,
+  });
+
+  if (error) {
+    return { status: error?.message };
+  }
+  return { status: "success" };
 }
