@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import AuthButton from "./AuthButton";
 import { forgotPassword } from "@/actions/auth";
-import { toast } from "sonner";
 
 const ForgotPassword = () => {
   const [error, setError] = useState<string | null>(null);
@@ -16,10 +15,9 @@ const ForgotPassword = () => {
     const result = await forgotPassword(formData);
 
     if (result.status === "success") {
-      toast.success("Password reset link sent to your email");
+      alert("Password reset link sent to your email");
     } else {
       setError(result.status);
-      toast.error(result.status);
     }
 
     setLoading(false);

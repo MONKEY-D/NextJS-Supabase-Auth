@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "./ui/button";
 
 const AuthButton = ({
   type,
@@ -8,7 +9,7 @@ const AuthButton = ({
   loading: boolean;
 }) => {
   return (
-    <button
+    <Button
       disabled={loading}
       type="submit"
       className={`${
@@ -16,7 +17,7 @@ const AuthButton = ({
       } rounded-md w-full px-12 py-3 text-sm font-medium text-white`}
     >
       {loading ? "Loading..." : type}
-    </button>
+    </Button>
   );
 };
 

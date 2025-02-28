@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import AuthButton from "./AuthButton";
 import { useRouter } from "next/navigation";
 import { signUp } from "@/actions/auth";
+import { PasswordInput } from "./PasswordInput";
 
 const SignUpForm = () => {
   const [error, setError] = useState<string | null>(null);
@@ -55,13 +56,14 @@ const SignUpForm = () => {
           <label className="block text-sm font-medium text-foreground">
             Password
           </label>
-          <input
+          {/* <input
             type="password"
             placeholder="Password"
             name="password"
             id="password"
             className="mt-1 w-full px-4 p-2  h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700"
-          />
+          /> */}
+          <PasswordInput placeholder="Password" />
         </div>
         <div className="mt-4">
           <AuthButton type="Sign up" loading={loading} />

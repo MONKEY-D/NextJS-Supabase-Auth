@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import AuthButton from "./AuthButton";
 import { useRouter } from "next/navigation";
 import { signIn } from "@/actions/auth";
+import { PasswordInput } from "./PasswordInput";
 
 const LoginForm = () => {
   const [error, setError] = useState<string | null>(null);
@@ -14,13 +15,13 @@ const LoginForm = () => {
     setError(null);
 
     const formData = new FormData(event.currentTarget);
-        const result = await signIn(formData);
-    
-        if (result.status == "success") {
-          router.push("/");
-        } else {
-          setError(result.status);
-        }
+    const result = await signIn(formData);
+
+    if (result.status == "success") {
+      router.push("/");
+    } else {
+      setError(result.status);
+    }
 
     setLoading(false);
   };
@@ -43,13 +44,14 @@ const LoginForm = () => {
           <label className="block text-sm font-medium text-foreground">
             Password
           </label>
-          <input
+          {/* <input
             type="password"
             placeholder="Password"
             name="password"
             id="password"
             className="mt-1 w-full px-4 p-2  h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700"
-          />
+          /> */}
+          <PasswordInput placeholder="Password" />
         </div>
         <div className="mt-4">
           <AuthButton type="login" loading={loading} />

@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import AuthButton from "./AuthButton";
 import { useRouter, useSearchParams } from "next/navigation";
 import { resetPassword } from "@/actions/auth";
-import { toast } from "sonner";
 
 const ResetPassword = () => {
   const searchParams = useSearchParams();
@@ -22,11 +21,11 @@ const ResetPassword = () => {
     );
 
     if (result.status === "success") {
-      toast.success("Password reset successfully!");
+      alert("Password reset successfully!");
       router.push("/");
     } else {
       setError(result.status);
-      toast.error(result.status);
+      alert(result.status);
     }
 
     setLoading(false);
