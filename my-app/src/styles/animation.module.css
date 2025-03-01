@@ -1,13 +1,5 @@
-/* body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: #000;
-} */
-
-.themeSwitch {
-  --toggle-size: 15px;
+.theme-switch {
+  --toggle-size: 13px;
   --container-width: 5.625em;
   --container-height: 2.5em;
   --container-radius: 6.25em;
@@ -28,10 +20,10 @@
   --circle-transition: 0.3s cubic-bezier(0, -0.02, 0.35, 1.17);
 }
 
-.themeSwitch,
-.themeSwitch *,
-.themeSwitch *::before,
-.themeSwitch *::after {
+.theme-switch,
+.theme-switch *,
+.theme-switch *::before,
+.theme-switch *::after {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   margin: 0;
@@ -39,7 +31,7 @@
   font-size: var(--toggle-size);
 }
 
-.themeSwitchContainer {
+.theme-switch__container {
   width: var(--container-width);
   height: var(--container-height);
   background-color: var(--container-light-bg);
@@ -56,7 +48,7 @@
   position: relative;
 }
 
-.themeSwitchContainer::before {
+.theme-switch__container::before {
   content: "";
   position: absolute;
   z-index: 1;
@@ -68,11 +60,11 @@
   border-radius: var(--container-radius);
 }
 
-.themeSwitchCheckbox {
+.theme-switch__checkbox {
   display: none;
 }
 
-.themeSwitchCircleContainer {
+.theme-switch__circle-container {
   width: var(--circle-container-diameter);
   height: var(--circle-container-diameter);
   background-color: rgba(255, 255, 255, 0.1);
@@ -97,7 +89,7 @@
   pointer-events: none;
 }
 
-.themeSwitchSunMoonContainer {
+.theme-switch__sun-moon-container {
   pointer-events: auto;
   position: relative;
   z-index: 2;
@@ -121,7 +113,7 @@
   transition: var(--transition);
 }
 
-.themeSwitchMoon {
+.theme-switch__moon {
   -webkit-transform: translateX(100%);
   -ms-transform: translateX(100%);
   transform: translateX(100%);
@@ -140,7 +132,7 @@
   position: relative;
 }
 
-.themeSwitchSpot {
+.theme-switch__spot {
   position: absolute;
   top: 0.75em;
   left: 0.312em;
@@ -152,21 +144,21 @@
   box-shadow: 0em 0.0312em 0.062em rgba(0, 0, 0, 0.25) inset;
 }
 
-.themeSwitchSpot:nth-of-type(2) {
+.theme-switch__spot:nth-of-type(2) {
   width: 0.375em;
   height: 0.375em;
   top: 0.937em;
   left: 1.375em;
 }
 
-.themeSwitchSpot:nth-last-of-type(3) {
+.theme-switch__spot:nth-last-of-type(3) {
   width: 0.25em;
   height: 0.25em;
   top: 0.312em;
   left: 0.812em;
 }
 
-.themeSwitchClouds {
+.theme-switch__clouds {
   width: 1.25em;
   height: 1.25em;
   background-color: var(--clouds-color);
@@ -201,7 +193,7 @@
   transition: 0.5s cubic-bezier(0, -0.02, 0.4, 1.25);
 }
 
-.themeSwitchStarsContainer {
+.theme-switch__stars-container {
   position: absolute;
   color: var(--stars-color);
   top: -100%;
@@ -215,44 +207,46 @@
 
 /* actions */
 
-.themeSwitchCheckbox:checked + .theme-switch__container {
+.theme-switch__checkbox:checked + .theme-switch__container {
   background-color: var(--container-night-bg);
 }
 
-.themeSwitchCheckbox:checked
-  + .themeSwitchContainer
-  .themeSwitchCircleContainer {
+.theme-switch__checkbox:checked
+  + .theme-switch__container
+  .theme-switch__circle-container {
   left: calc(
     100% - var(--circle-container-offset) - var(--circle-container-diameter)
   );
 }
 
-.themeSwitchCheckbox:checked
-  + .themeSwitchContainer
-  .themeSwitchCircleContainer:hover {
+.theme-switch__checkbox:checked
+  + .theme-switch__container
+  .theme-switch__circle-container:hover {
   left: calc(
     100% - var(--circle-container-offset) - var(--circle-container-diameter) -
       0.187em
   );
 }
 
-.themeSwitchCircleContainer:hover {
+.theme-switch__circle-container:hover {
   left: calc(var(--circle-container-offset) + 0.187em);
 }
 
-.themeSwitchCheckbox:checked + .themeSwitchContainer .themeSwitchMoon {
+.theme-switch__checkbox:checked + .theme-switch__container .theme-switch__moon {
   -webkit-transform: translate(0);
   -ms-transform: translate(0);
   transform: translate(0);
 }
 
-.themeSwitchCheckbox:checked + .themeSwitchContainer .themeSwitchClouds {
+.theme-switch__checkbox:checked
+  + .theme-switch__container
+  .theme-switch__clouds {
   bottom: -4.062em;
 }
 
-.themeSwitchCheckbox:checked
-  + .themeSwitchContainer
-  .themeSwitchStarsContainer {
+.theme-switch__checkbox:checked
+  + .theme-switch__container
+  .theme-switch__stars-container {
   top: 50%;
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);

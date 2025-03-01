@@ -17,6 +17,11 @@ const Navbar = async () => {
           Home
         </Link>
         <div>
+        <Link className="font-bold" href="/private">
+          Private
+        </Link>
+        </div>
+        <div>
           <ModeToggle />
         </div>
         <div className="flex items-center gap-x-5">
