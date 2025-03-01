@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import { createClient } from "../../utils/supabase/server";
 import Logout from "./Logout";
+import { ModeToggle } from "./ModeToggle";
 
 const Navbar = async () => {
   const supabase = await createClient();
@@ -15,9 +16,8 @@ const Navbar = async () => {
         <Link className="font-bold" href="/">
           Home
         </Link>
-
-        <div className="flex items-center gap-x-5">
-          <Link href="/private">Private</Link>
+        <div>
+          <ModeToggle />
         </div>
         <div className="flex items-center gap-x-5">
           {!user ? (
@@ -31,7 +31,7 @@ const Navbar = async () => {
               <div className="flex items-center gap-x-2 text-sm">
                 {user?.email}
               </div>
-              <Logout/>
+              <Logout />
             </>
           )}
         </div>
